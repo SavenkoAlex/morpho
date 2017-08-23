@@ -1,21 +1,17 @@
-#vpath %.h headers/
-INCLUDE := headers
-TARGET   = mo
+INC_H := headers/
+INC_L := lib/
+T   = mo
+CC=g++
 
-.PHONY : all clean
+#all:$(T)
 
-all:$(TARGET)
+$(T): $(T).o
+	@echo ========EXEC============
+	$(CC) $^  -Wl,rpath,$(INC_L) -o $@
 
-$(TARGET).o: $^ sample_sdk.cpp
-	@echo "===================Объектный_файл========================="
-	@sleep 2
-	gcc -c -I$(INCLUDE) -o $(TARGET).o sample_sdk.cpp
-
-$(TARGET): $^ $(TARGET).o
-	@echo "===================Исполняемый_файл======================="
-	sleep 2
-	gcc -o $(TARGET) -I$(INCLUDE) $(TARGET).o  
+$(T).o: sample_sdk.cpp
+	@echo ========Object==========
+	$(CC) -I$(INC_H) -c sample_sdk.cpp -o mo.o
 
 clean:
-	rm -rf $(TARGET)*.o
-
+	rm -rf $(T)*.o
