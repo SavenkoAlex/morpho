@@ -1889,10 +1889,10 @@ I deviceOperation(PT_DATA io_px_data)
 				case 2:
 					{
 						bool successOfFunction;
-						//l_i_Ret = LoadKsSymmSec( successOfFunction, io_px_data );
+							l_i_Ret = LoadKsSymmSec( successOfFunction, io_px_data );
 
 						if( l_i_Ret != MORPHO_OK )
-							//fprintf(stdout, "Load Ks in Symmetric Secure Mode-----> error %d\n", l_i_Ret);
+							fprintf(stdout, "Load Ks in Symmetric Secure Mode-----> error %d\n", l_i_Ret);
 						else
 							if( successOfFunction )
 								fprintf(stdout, "Load Ks in Symmetric Secure Mode-----> OK\n");
