@@ -29,7 +29,7 @@ I openDeviceOperation(PT_DATA io_px_data)
 {
 	I			l_i_Ret;
 	UL 			l_ul_NbUsbDevice;
-	UL			l_ul_index;
+	UL			l_ul_index=0;
 	PC			l_pc_deviceName;
 	PC			l_pc_deviceProperties;
 
@@ -39,13 +39,56 @@ I openDeviceOperation(PT_DATA io_px_data)
 
 	if(l_ul_NbUsbDevice)
 	{
-		fprintf(stdout,"Detected %u USB devices :\n",l_ul_NbUsbDevice);
+		fprintf(stdout,"Detected %u USB devices \n",l_ul_NbUsbDevice);
 	}
 
-	for (l_ul_index=0;l_ul_index < l_ul_NbUsbDevice;l_ul_index++)
+	if ((I)l_ul_NbUsbDevice>1)
 	{
-		l_i_Ret = io_px_data->m_x_device.GetUsbDevicesNameEnum(l_ul_index,l_pc_deviceName, l_pc_deviceProperties);
-		fprintf(stdout, "%u - %s - %s\n", l_ul_index, l_pc_deviceName, l_pc_deviceProperties);
+		fprintf(stdout,"Find more that one device-%u please use one",l_ul_NbUsbDevice);
+
+		for (l_ul_index;l_ul_index < l_ul_NbUsbDevice;l_ul_index++)
+		{
+			l_i_Ret = io_px_data->m_x_device.GetUsbDevicesNameEnum(l_ul_index,l_pc_deviceName, l_pc_deviceProperties);
+			fprintf(stdout, "%u - %s - %s\n", l_ul_index, l_pc_deviceName, l_pc_deviceProperties);
+		}
 	}
+
+	else
+	{
+		l_i_Ret=io_px_data->m_x_device.GetUsbDevicesNameEnum((I)l_ul_index,l_pc_deviceName,l_pc_deviceProperties);
+		if(l_i_Ret != MORPHO_OK)
+			fprintf(stdout,"Invalid device\n");
+		else
+		{
+			fprintf(stdout, "%u - %s - %s\n", l_ul_index, l_pc_deviceName, l_pc_deviceProperties);
+			
+			l_i_Ret = io_px_data->m_x_device.OpenUsbDevice(l_pc_deviceName,0,NULL);	
+			if(l_i_Ret == MORPHO_OK)
+			{
+				if (((strcmp(l_pc_deviceProperties, "CBM") == 0)) ||((strcmp(l_pc_deviceProperties, "Sagem MorphoSmart CBM") == 0)))
+				{
+					io_px_data->m_e_deviceType = DEVICE_CBM;
+				}
+				else if (strcmp(l_pc_deviceProperties, "CBI") == 0)
+				{
+					io_px_data->m_e_deviceType = DEVICE_CBI;
+				}
+				else if (strcmp(l_pc_deviceProperties, "MSI") == 0)
+				{
+					io_px_data->m_e_deviceType = DEVICE_MSI;
+				}
+				else if ( (strcmp(l_pc_deviceProperties, "MorphoSmart FINGER VP") == 0) || (strcmp(l_pc_deviceProperties, "MSO FVP") == 0) )
+				{
+					io_px_data->m_e_deviceType = DEVICE_FVP;
+				}
+				//TODO: map other devices properties to the correct type accordingly
+				else
+				{
+					io_px_data->m_e_deviceType = DEVICE_UNKNOWN;
+				}
+			}
+		}
+
+	} 
 }
 
