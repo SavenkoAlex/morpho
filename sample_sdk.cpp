@@ -21,10 +21,10 @@
 
 static UL	g_ul_ledEventsID;
 
-static UC		g_uc_ConnectionType = 0; 					// unsignet char
-static I		g_i_speed = 115200;      					// int
+static UC		g_uc_ConnectionType = 0; 					
+static I		g_i_speed = 115200;      					
 static I		g_i_port = 1;
-static C		g_c_PortName[INPUT_BUFFER_SIZE];			// char
+static C		g_c_PortName[INPUT_BUFFER_SIZE];		
 
 #ifndef __arm__
 namespace openssl

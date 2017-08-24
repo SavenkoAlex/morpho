@@ -34,6 +34,7 @@ typedef struct{
 I deviceOperation(PT_DATA io_data);
 I databaseOperation(PT_DATA io_data);
 I userOperation(PT_DATA io_data);
+//I openDeviceOperation(PT_DATA io_data);
 
 T_MORPHO_TYPE_TEMPLATE getTemplateType();
 void getTemplateExtension(T_MORPHO_TYPE_TEMPLATE i_x_TypeTemplate,PC o_pc_extension);
