@@ -960,9 +960,9 @@ I deviceOperation(PT_DATA io_px_data)
 			char l_ac_Extension[16];
 
 #ifdef ENABLE_DISPLAY
-				InitScreen();
+				InitScreen()
 #endif
-
+;
 			l_x_TypeTemplate = getTemplateType();
 			getTemplateExtension(l_x_TypeTemplate,l_ac_Extension);
 
